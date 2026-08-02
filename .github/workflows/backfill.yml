@@ -1,0 +1,32 @@
+name: Backfill historial
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Instalar dependencias
+        working-directory: scraper
+        run: npm install --no-audit --no-fund
+      - name: Rellenar historial
+        run: node scraper/backfill.mjs
+      - name: Guardar cambios
+        run: |
+          git config user.name "quiniela-bot"
+          git config user.email "quiniela-bot@users.noreply.github.com"
+          git add docs/data/resultados.json
+          if git diff --staged --quiet; then
+            echo "Sin novedades."
+          else
+            git commit -m "Backfill historial $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
