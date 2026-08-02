@@ -1,0 +1,14 @@
+{
+  "name": "quiniela-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Scraper de la Quiniela de la Ciudad (ex-Nacional) desde ruta1000",
+  "scripts": {
+    "scrape": "node scrape.mjs",
+    "backfill": "node backfill.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}
