@@ -72,6 +72,7 @@
   .num{display:grid;grid-template-columns:26px 1fr;align-items:center;padding:2.5px 13px;font-family:var(--f-mono);font-size:15.5px}
   .num .pos{color:var(--mut);font-size:11px;text-align:right;padding-right:10px}
   .num .val{letter-spacing:.06em;color:var(--ink)}
+  .num.sep{border-bottom:5px solid #9aa6b5;margin-bottom:5px;padding-bottom:7px}
   .num.cabeza{background:linear-gradient(90deg,rgba(231,154,36,.13),transparent)}
   .num.cabeza .pos{color:var(--amber-deep);font-weight:600}
   .num.cabeza .val{font-weight:600;font-size:16.5px}
@@ -2582,7 +2583,7 @@ function render(){
     const nums = dia[s];
     if(!nums) return '<div class="sorteo empty">'+LABEL[s]+'<br><span style="font-size:11px">— sin datos —</span></div>';
     const rows = nums.map((n,i)=>
-      '<div class="num '+(i===0?'cabeza':'')+'"><span class="pos">'+(i+1)+'º</span><span class="val">'+n.slice(-2)+'</span></div>'
+      '<div class="num '+(i===0?'cabeza':'')+((i+1)%5===0 && i<nums.length-1?' sep':'')+'"><span class="pos">'+(i+1)+'º</span><span class="val">'+n.slice(-2)+'</span></div>'
     ).join("");
     return '<div class="sorteo"><h3>'+LABEL[s]+' <span class="hr">'+HORA[s]+'</span></h3><div class="nums">'+rows+'</div></div>';
   }).join("");
