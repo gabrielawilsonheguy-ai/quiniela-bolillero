@@ -71,6 +71,7 @@ td.hi,tr.hl td.hi,td.old.hi{background:var(--gold)!important;color:var(--navy)!i
  <div id="sy-off"><div class="tb"><div style="flex:2;min-width:230px"><label>Dirección de la base (Firebase)</label><input id="sy-url" placeholder="https://xxxx-default-rtdb.firebaseio.com" style="width:100%;font-size:13px;padding:5px"></div>
  <div style="flex:2;min-width:200px"><label>Código secreto (el mismo en todos tus aparatos)</label><input id="sy-code" placeholder="pegá el código" style="width:100%;font-size:13px;padding:5px"></div>
  <div><button class="btn" id="sy-gen">Generar código</button></div><div><button class="btn pri" id="sy-go">Conectar</button></div></div></div>
+ <div id="sy2" style="font-size:13px;margin-bottom:6px"></div>
  <div id="sy-on" hidden><button class="btn" id="sy-now">Sincronizar ahora</button> <button class="btn" id="sy-info">Ver dirección y código</button> <button class="btn" id="sy-out">Desconectar</button></div></div></div>
 <div class="wrap">
 <div class="card" id="cu"><div class="tb">
@@ -158,7 +159,7 @@ async function cargar(){
 const YK="lw:planillas-sync-v1";
 const gY=()=>{try{return JSON.parse(g(YK)||"null")}catch(e){return null}};
 const rk=id=>id.replace("|","_"),lk=r=>r.replace("_","|");
-function ystat(t,bad){$("sy").textContent=t;$("sy").style.color=bad?"#B45A2B":"#3F7A4E"}
+function ystat(t,bad){$("sy").textContent=t;$("sy").style.color=bad?"#B45A2B":"#3F7A4E";const s2=$("sy2");if(s2){s2.textContent=t;s2.style.color=bad?"#B45A2B":"#3F7A4E"}}
 async function yreq(path,method,body){const Y=gY();const r=await fetch(Y.url.replace(/\/+$/,"")+"/planillas/"+encodeURIComponent(Y.code)+path+".json",{method,headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)});if(!r.ok)throw new Error(r.status);return r.json()}
 let primera=true;
 async function ypull(){if(!gY()){ystat("☁ Sin sincronizar: tocá ☁ Sincronizar arriba",1);return}
@@ -172,9 +173,9 @@ function yui(){const on=!!gY();$("sy-off").hidden=on;$("sy-on").hidden=!on;if(!o
 $("sy-btn").onclick=()=>{$("sync").hidden=!$("sync").hidden;fit()};
 $("sy-gen").onclick=()=>{const a=new Uint8Array(18);crypto.getRandomValues(a);$("sy-code").value=Array.from(a,x=>"abcdefghijkmnpqrstuvwxyz23456789"[x%32]).join("")};
 $("sy-go").onclick=async()=>{const url=$("sy-url").value.trim(),code=$("sy-code").value.trim();
- if(!/^https:\/\/.+\.(firebaseio\.com|firebasedatabase\.app)\/?$/.test(url)){alert("La dirección debe verse así: https://algo-default-rtdb.firebaseio.com");return}
- if(code.length<16){alert("El código tiene que tener al menos 16 caracteres.");return}
- st(YK,JSON.stringify({url,code}));yui();primera=true;await ypull()};
+ if(!/^https:\/\/.+\.(firebaseio\.com|firebasedatabase\.app)\/?$/.test(url)){ystat("☁ La dirección no es válida. Tiene que verse así: https://algo-default-rtdb.firebaseio.com",1);return}
+ if(code.length<16){ystat("☁ El código tiene que tener al menos 16 caracteres.",1);return}
+ st(YK,JSON.stringify({url,code}));yui();primera=true;ystat("☁ Conectando…");try{await ypull()}catch(e){ystat("☁ Error al conectar ("+e.message+")",1)}};
 $("sy-now").onclick=ypull;
 $("sy-info").onclick=()=>{const Y=gY();if(!Y)return;prompt("1 de 2 · Copiá la DIRECCIÓN de la base y pegala en tu otro aparato:",Y.url);prompt("2 de 2 · Copiá el CÓDIGO y pegalo en tu otro aparato:",Y.code)};
 $("sy-out").onclick=()=>{if(confirm("¿Desconectar? Las marcas siguen en este aparato y en la nube.")){st(YK,"null");yui()}};
