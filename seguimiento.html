@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Seguimiento · La Primera</title>
+<meta name="theme-color" content="#1B2A4A">
+<link rel="manifest" href="manifest-seguimiento.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/seg-32.png">
+<link rel="apple-touch-icon" href="icons/seg-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Seguimiento">
+<style>
+:root{--navy:#1B2A4A;--gold:#C9A84C;--bg:#E8E6DF;--card:#F5F3EE;--line:#D8D4C8;--red:#C0392B;--rh:24px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--navy);font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+header .btn,header label{flex:none;white-space:nowrap}
+header{background:var(--navy);color:#fff;padding:6px 14px;border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:12px}
+h1{font:700 17px Georgia,serif;margin:0}
+header small{color:#cfd6e6;font-size:11px}
+.wrap{padding:8px 12px}
+.card{margin-bottom:14px}.ttl{font:700 18px Georgia,serif;align-self:center;margin-right:6px}
+.scroll{overflow-x:auto;overflow-y:hidden}
+.tb{display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-bottom:6px}
+.tb label{font-size:11px;display:block;margin-bottom:2px}
+.btn{border:1px solid var(--navy);background:var(--card);color:var(--navy);padding:5px 10px;border-radius:8px;font-size:13px;cursor:pointer}
+.btn.on,.btn.pri{background:var(--navy);color:#fff}
+.scroll{overflow:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
+table{border-collapse:separate;border-spacing:0;font-family:"Courier New",monospace}
+th,td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:0 7px;text-align:center;white-space:nowrap;height:var(--rh);font-size:calc(var(--rh)*.58);position:relative}
+thead th{position:sticky;top:0;background:var(--navy);color:#fff;z-index:2;font-size:11px;line-height:1.1;height:auto;padding:2px 7px}
+th.pos,td.pos{position:sticky;left:0;background:var(--card);font-weight:700;z-index:1}
+thead th.pos{background:var(--navy);color:var(--gold);z-index:3}
+th.fin,td.fin{background:#FBF3D9;font-weight:700;padding:0 4px}
+.f1{width:58px;min-width:58px;max-width:58px}.f3{width:130px;min-width:130px;max-width:130px}.f2{width:84px;min-width:84px;max-width:84px}
+thead th.fin{white-space:normal}
+thead th.fin{background:var(--gold);color:var(--navy);z-index:2}
+td.fin{position:sticky;z-index:1}
+td svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+td.diag svg line{stroke:var(--red);stroke-width:1.6;vector-effect:non-scaling-stroke}
+.ci{display:inline-block;border:2px solid var(--navy);border-radius:50%;min-width:calc(var(--rh)*.9);height:calc(var(--rh)*.9);line-height:calc(var(--rh)*.9 - 4px)}
+#est,#sy{font-size:12px}
+td.d{cursor:pointer}
+td.old{background:#dcdcdc;color:#8a8a8a}
+.sq{display:inline-block;border:2px solid #2E7D4F;border-radius:3px;min-width:calc(var(--rh)*.9);height:calc(var(--rh)*.9);line-height:calc(var(--rh)*.9 - 4px)}
+.sq .ci{border-width:2px;min-width:0;height:auto;line-height:1;padding:0 1px}
+td.fin.sal{background:#CDEBD6;color:#1F5C38;font-size:calc(var(--rh)*.46)}td.fin.bus{font-size:calc(var(--rh)*.46);font-weight:400;color:#8a5a00}td.fin.prc{font-size:calc(var(--rh)*.46);font-weight:700;color:#1B2A4A;background:#E8E2C4}
+tr.hl td.d:not(.old){background:#D6E6FF}
+tr.hl td.old{background:#bcc6d6;color:#6f7a8c}
+td.pos.ana,td.fin.ana{background:#F4A340!important;color:#4A2300!important}
+td.fin.f3.ana{font-size:calc(var(--rh)*.5)}
+tr.hl td.pos{background:var(--navy);color:var(--gold)}
+tr.hl td{border-top:2px solid var(--navy);border-bottom:2px solid var(--navy);font-weight:700}
+td.pos{cursor:pointer}
+td.hi,tr.hl td.hi,td.old.hi{background:var(--gold)!important;color:var(--navy)!important;font-weight:700}
+.pt{display:none}
+@media print{
+ body.pu #cd,body.pd #cu{display:none!important}.card{margin:0}
+ @page{size:A4 landscape;margin:8mm}
+ body{background:#fff}.tb{display:none!important}
+ header{background:#fff;color:#1B2A4A;padding:0 0 4px}header small{color:#555}
+ .scroll{overflow:visible;border:0}
+ thead th{position:static;background:#1B2A4A!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ td.diag svg line{stroke:#C0392B!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ td.hi,td.old,tr.hl td,td.ana{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ th.pos,td.pos,td.fin{position:static;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ table{--rh:15px}
+}
+</style></head><body>
+<header><div><h1>Seguimiento · La Primera</h1><small>Unidades: dígito más demorado por fila · cuadrado = salió el que se esperaba · tocá una celda para marcarla · naranja = en Análisis (67 sorteos sin salir) · se actualiza sola</small></div><label style="margin-left:auto;font-size:12px;color:#fff;cursor:pointer;white-space:nowrap;background:#2c3e66;border:1px solid #C9A84C;border-radius:8px;padding:5px 9px"><input type="checkbox" id="r3" style="vertical-align:-2px"> Aplicar regla 3</label><a class="btn" href="analisis.html" style="text-decoration:none">Análisis ›</a><button class="btn" id="sy-btn">☁ Sincronizar</button></header>
+<div id="sync" class="wrap" hidden style="padding-bottom:0"><div class="card" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:6px">
+ <div id="sy-off"><div class="tb"><div style="flex:2;min-width:230px"><label>Dirección de la base (Firebase)</label><input id="sy-url" placeholder="https://xxxx-default-rtdb.firebaseio.com" style="width:100%;font-size:13px;padding:5px"></div>
+ <div style="flex:2;min-width:200px"><label>Código secreto (el mismo en todos tus aparatos)</label><input id="sy-code" placeholder="pegá el código" style="width:100%;font-size:13px;padding:5px"></div>
+ <div><button class="btn" id="sy-gen">Generar código</button></div><div><button class="btn pri" id="sy-go">Conectar</button></div></div></div>
+ <div id="sy-on" hidden><button class="btn" id="sy-now">Sincronizar ahora</button> <button class="btn" id="sy-info">Ver dirección y código</button> <button class="btn" id="sy-out">Desconectar</button></div></div></div>
+<div class="wrap">
+<div class="card" id="cu"><div class="tb">
+ <div class="ttl">Unidades</div>
+ <div><label>Orden</label><button class="btn" data-f="u" data-a="ord"></button></div>
+ <div><label>Sorteos</label><b id="n-u"></b></div>
+ <div><button class="btn" id="ver-u">Ir a la marca ›</button> <button class="btn" id="nover-u" hidden>✕ Quitar resalte</button></div>
+ <div><button class="btn pri" data-f="u" data-a="prt">🖨 Imprimir / PDF</button></div>
+ <div><span id="est"></span><br><span id="sy"></span></div>
+</div><div class="pt" id="pt-u"></div><div class="scroll" id="tu"></div></div>
+<div class="card" id="cd"><div class="tb">
+ <div class="ttl">Decenas</div>
+ <div><label>Orden</label><button class="btn" data-f="d" data-a="ord"></button></div>
+ <div><label>Sorteos</label><b id="n-d"></b></div>
+ <div><button class="btn" id="ver-d">Ir a la marca ›</button> <button class="btn" id="nover-d" hidden>✕ Quitar resalte</button></div>
+ <div><button class="btn pri" data-f="d" data-a="prt">🖨 Imprimir / PDF</button></div>
+ 
+</div><div class="pt" id="pt-d"></div><div class="scroll" id="td"></div></div>
+</div>
+<script src="lw-core.js"></script>
+<script>
+const URL_DATA=LW.URL_DATA;
+const CK="lw:planillas-cache-v1",SK="lw:seguimiento-v2";
+const $=id=>document.getElementById(id);
+const g=k=>{try{return localStorage.getItem(k)}catch(e){return null}},st=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const fmt=LW.fmt;
+let data=[];
+const def=()=>({newest:false,marks:[]});
+let S={u:def(),d:def()};
+try{const x=JSON.parse(g(SK)||"null");if(x){for(const f of["u","d"]){if(x[f]){S[f].newest=!!x[f].newest;S[f].marks=Array.isArray(x[f].marks)?x[f].marks:[]}}}}catch(e){}
+let HL={u:-1,d:-1};
+const save=()=>st(SK,JSON.stringify(S));
+const NAMES={u:"Unidades",d:"Decenas"};
+const parse=LW.parse;
+function seguimiento(i,f){return LW.seguimiento(data,i,f)}
+function rows(f){const a=data.slice();return S[f].newest?a.reverse():a}
+function fill(f){document.querySelector(`[data-f=${f}][data-a=ord]`).textContent=S[f].newest?"Más nueva a la izquierda":"Más nueva a la derecha"}
+function build(f){const r=rows(f),c=S[f],SG=Array.from({length:20},(_,i)=>seguimiento(i,f));
+ let h='<table><thead><tr><th class="pos">Pos</th>'+r.map(x=>`<th>${x.f.slice(0,5)}<br>${x.f.slice(6)}</th>`).join("")+
+  '<th class="fin f1" style="right:214px">Dígito</th><th class="fin f2" style="right:130px">Sorteos sin salir</th><th class="fin f3" style="right:0">Estado</th>'+'</tr></thead><tbody>';
+ for(let i=0;i<20;i++){
+  const sg=SG&&SG[i];
+  h+=`<tr${HL[f]===i?' class="hl"':''}><td class="pos${sg&&sg.ana?' ana':''}" data-f="${f}" data-p="${i}">${String(i+1).padStart(2,"0")}</td>`+r.map(x=>{const d=x[f][i],id=x.k+"|"+i;
+   let cls="d",inner=d;
+   if(sg){
+    if(sg.oldHasta&&x.k<sg.oldHasta)cls+=" old";
+    inner=x.k===sg.kCirc?`<span class="ci">${d}</span>`:d;
+    if(sg.cierres.includes(x.k))inner=`<span class="sq">${inner}</span>`;
+    if(sg.kDiag&&x.k===sg.kDiag){cls+=" diag";inner=`<svg viewBox="0 0 10 10" preserveAspectRatio="none"><line x1="0" y1="10" x2="10" y2="0"/></svg>${inner}`}}
+   if(c.marks.includes(id))cls+=" hi";
+   return `<td class="${cls}" data-f="${f}" data-m="${id}">${inner}</td>`}).join("");
+  h+=(sg?`<td class="fin f1${sg.ana?' ana':''}" style="right:214px">${sg.dig}</td><td class="fin f2${sg.ana?' ana':''}" style="right:130px">${sg.gap}</td><td class="fin f3 ${sg.sal?'sal':(sg.ana?'ana':(sg.proc?'prc':'bus'))}" style="right:0">${sg.estado}</td>`:`<td class="fin f1" style="right:214px"></td><td class="fin f2" style="right:130px"></td><td class="fin f3" style="right:0"></td>`);
+  h+='</tr>'}
+ h+='</tbody></table>';$("t"+f).innerHTML=h;$("n-"+f).textContent=r.length;if(!c.newest)$("t"+f).scrollLeft=$("t"+f).scrollWidth}
+// Cada planilla ocupa una pantalla: las 20 posiciones se ven completas, sin scroll interno.
+function fit(){const c=$("cu"),t=$("tu");const top=t.getBoundingClientRect().top-c.getBoundingClientRect().top;
+ const headH=34,avail=window.innerHeight-document.querySelector("header").offsetHeight-top-headH-26;
+ const rh=Math.max(18,Math.min(34,Math.floor(avail/20)));
+ document.documentElement.style.setProperty("--rh",rh+"px")}
+function render(f){if(f){fill(f);build(f)}else{render("u");render("d")}fit()}
+function paintMarks(f){document.querySelectorAll(`#t${f} td[data-m]`).forEach(td=>td.classList.toggle("hi",S[f].marks.includes(td.dataset.m)))}
+// Resalte de fila: una sola fila por planilla, para saber de cuál se habla.
+function setHL(f,i,scroll){HL[f]=i;document.querySelectorAll(`#t${f} tbody tr`).forEach((tr,k)=>tr.classList.toggle("hl",k===i));
+ $("nover-"+f).hidden=i<0;$("ver-"+f).textContent=i<0?"Ir a la marca ›":"Ir a la marca (pos "+String(i+1).padStart(2,"0")+") ›";
+ if(scroll&&i>=0){const td=document.querySelector(`#t${f} tbody tr:nth-child(${i+1}) td.diag`);if(td)td.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})}}
+document.addEventListener("click",e=>{const t=e.target,f=t.dataset.f;
+ if(t.dataset.a==="ord"){S[f].newest=!S[f].newest;save();render(f)}
+ else if(t.dataset.a==="prt"){const r=rows(f);if(!r.length)return;const ks=r.map(x=>x.k).sort();
+  $("pt-"+f).textContent="La Primera · "+NAMES[f]+" · "+r.length+" sorteos · "+fmt(ks[0])+" a "+fmt(ks[ks.length-1]);
+  document.body.className="p"+f;window.print();document.body.className=""}
+ else if(t.dataset.p!==undefined){const i=+t.dataset.p;setHL(f,HL[f]===i?-1:i,true)}
+ else if(t.dataset.m){const m=S[f].marks,i=m.indexOf(t.dataset.m);if(i>=0)m.splice(i,1);else m.push(t.dataset.m);save();t.classList.toggle("hi",i<0);yset(f,t.dataset.m,i<0)}});
+for(const f of["u","d"]){$("ver-"+f).onclick=()=>setHL(f,(HL[f]+1)%20,true);$("nover-"+f).onclick=()=>setHL(f,-1)}
+window.addEventListener("resize",fit);
+async function cargar(){
+ $("est").textContent="Actualizando…";
+ try{const r=await fetch(URL_DATA,{cache:"no-store"});if(!r.ok)throw new Error(r.status);const j=await r.json();
+  data=parse(j);st(CK,JSON.stringify({t:Date.now(),j:{updated:j.updated,sorteos:Object.fromEntries(Object.entries(j.sorteos||{}).map(([k,v])=>[k,{primera:v&&v.primera}]))}}));
+  $("est").textContent="Base actualizada: "+(j.updated?new Date(j.updated).toLocaleString("es-AR",{dateStyle:"short",timeStyle:"short"}):"")}
+ catch(e){let c=null;try{c=JSON.parse(g(CK))}catch(x){}
+  if(c){data=parse(c.j);$("est").textContent="Sin conexión; mostrando la última copia guardada."}
+  else{data=[];$("est").textContent="No se pudo leer la base."}}
+ render()}
+// ---- sincronización de marcas (usa la conexión de Firebase ya hecha en Planillas) ----
+const YK="lw:planillas-sync-v1";
+const gY=()=>{try{return JSON.parse(g(YK)||"null")}catch(e){return null}};
+const rk=id=>id.replace("|","_"),lk=r=>r.replace("_","|");
+function ystat(t,bad){$("sy").textContent=t;$("sy").style.color=bad?"#B45A2B":"#3F7A4E"}
+async function yreq(path,method,body){const Y=gY();const r=await fetch(Y.url.replace(/\/+$/,"")+"/planillas/"+encodeURIComponent(Y.code)+path+".json",{method,headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)});if(!r.ok)throw new Error(r.status);return r.json()}
+let primera=true;
+async function ypull(){if(!gY()){ystat("☁ Sin sincronizar: tocá ☁ Sincronizar arriba",1);return}
+ try{let j=await yreq("","GET")||{};
+  if(primera){primera=false;for(const f of["u","d"]){const up={};for(const id of S[f].marks)if(!(j["s"+f]&&j["s"+f][rk(id)]))up[rk(id)]=true;if(Object.keys(up).length)await yreq("/s"+f,"PATCH",up)}j=await yreq("","GET")||{}}
+  for(const f of["u","d"]){S[f].marks=Object.keys(j["s"+f]||{}).map(lk);paintMarks(f)}save();
+  ystat("☁ Sincronizado ✓ "+new Date().toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"}))}
+ catch(e){ystat("☁ No se pudo sincronizar ("+e.message+")",1)}}
+async function yset(f,id,on){if(!gY())return;try{await yreq("/s"+f+"/"+encodeURIComponent(rk(id)),on?"PUT":"DELETE",on?true:undefined);ystat("☁ Sincronizado ✓ "+new Date().toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"}))}catch(e){ystat("☁ No se pudo guardar la marca ("+e.message+")",1)}}
+function yui(){const on=!!gY();$("sy-off").hidden=on;$("sy-on").hidden=!on;if(!on)ystat("☁ Sin sincronizar: tocá ☁ Sincronizar arriba",1)}
+$("sy-btn").onclick=()=>{$("sync").hidden=!$("sync").hidden;fit()};
+$("sy-gen").onclick=()=>{const a=new Uint8Array(18);crypto.getRandomValues(a);$("sy-code").value=Array.from(a,x=>"abcdefghijkmnpqrstuvwxyz23456789"[x%32]).join("")};
+$("sy-go").onclick=async()=>{const url=$("sy-url").value.trim(),code=$("sy-code").value.trim();
+ if(!/^https:\/\/.+\.(firebaseio\.com|firebasedatabase\.app)\/?$/.test(url)){alert("La dirección debe verse así: https://algo-default-rtdb.firebaseio.com");return}
+ if(code.length<16){alert("El código tiene que tener al menos 16 caracteres.");return}
+ st(YK,JSON.stringify({url,code}));yui();primera=true;await ypull()};
+$("sy-now").onclick=ypull;
+$("sy-info").onclick=()=>{const Y=gY();if(!Y)return;prompt("1 de 2 · Copiá la DIRECCIÓN de la base y pegala en tu otro aparato:",Y.url);prompt("2 de 2 · Copiá el CÓDIGO y pegalo en tu otro aparato:",Y.code)};
+$("sy-out").onclick=()=>{if(confirm("¿Desconectar? Las marcas siguen en este aparato y en la nube.")){st(YK,"null");yui()}};
+yui();
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)ypull()});setInterval(()=>{if(!document.hidden)ypull()},45000);
+$("r3").checked=LW.reglas.r3;$("r3").onchange=()=>{LW.setR3($("r3").checked);render()};
+cargar().then(ypull);
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script></body></html>
