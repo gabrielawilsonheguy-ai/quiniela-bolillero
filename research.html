@@ -173,7 +173,7 @@ function seccion2(o){
  <div class="met" style="margin-top:6px">No entran acá: ${nf(o.sinY)} ciclos que salieron antes de que se pudiera calcular Y mín, ${nf(o.desc)} descartados por regla y ${nf(o.curso9)} que todavía están en carrera.</div></div>`}
 function seccion3(o){const n=BINS.reduce((s,b)=>s+o.bins[b.k],0);
  return `<div class="sec"><h2>5 · ¿Con qué frecuencia llegan a la ventana?</h2><p class="q">Y cuántos salen justo antes de empezar (5 o 10 sorteos antes de Y mín).</p>
- <div class="kpi"><div class="ok"><span>Llegan a la ventana</span><b>${nf(o.lleg)}</b><small>${pc(o.lleg,n)} de ${nf(n)} ciclos que cerraron porque salió el dígito (sin los descartados por regla)</small></div><div><span>Salen de 1 a 5 sorteos antes</span><b>${nf(o.bins.a1)}</b><small>${pc(o.bins.a1,n)} · entrando 5 antes se ve este grupo</small></div><div><span>Salen de 6 a 10 sorteos antes</span><b>${nf(o.bins.a2)}</b><small>${pc(o.bins.a2,n)}</small></div></div>${ch(n)}</div>`}
+ <div class="kpi"><div class="ok"><span>Llegan a la ventana</span><b>${nf(o.lleg)}</b><small>${pc(o.lleg,n)} de ${nf(n)} cerrados porque salió el dígito (sin los descartados por regla)</small></div><div><span>Salen de 1 a 5 sorteos antes</span><b>${nf(o.bins.a1)}</b><small>${pc(o.bins.a1,n)} de ${nf(n)} cerrados porque salió el dígito · entrando 5 antes se ve este grupo</small></div><div><span>Salen de 6 a 10 sorteos antes</span><b>${nf(o.bins.a2)}</b><small>${pc(o.bins.a2,n)} de ${nf(n)} cerrados porque salió el dígito</small></div></div>${ch(n)}</div>`}
 const STK=LN.STK,PAGA=LN.PAGA;
 function seccion4(o){
  const neto=o.gan-o.per;
